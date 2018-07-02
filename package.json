@@ -1,0 +1,10 @@
+{
+    "name": "basic response scripts",
+    "version": "1.0.0",
+    "author": "weirui",
+    "description": "assignment week one",
+    "keywords": ["node.js","javascript"],
+    "main": "index.js",
+    "license": "MIT",
+    
+}
