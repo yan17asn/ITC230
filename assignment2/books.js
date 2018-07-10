@@ -1,36 +1,19 @@
-//var books = require('./book.js');
-var books = [
-{ id:002,title:'tomsawyer', price:12 },
- { id:003,title:'warandeace', price:25 },
- { id:001,title:'dune', price:20 },
- { id:003,title:'war', price:25 }
+const books = [
+{ title:'tomsawyer',author:'mark twain', price:12,inventory:23,},
+{ title:'warcross',author:'marie lu', price:25, inventory:5,},
+{ title:'dune',author:'frank herbert', price:20, inventory:32,},
+{ title:'sweettea',author:'wendy lynn decker', price:14, inventory:37,},
+{ title:'gilchrist',author:'christian galacar', price:17, inventory:12, }
 ];
 
+exports.getAll = ()=>books;
 
-exports.hello = function(){
-    console.log('helloworld');
-};
+exports.add = (str)=>books.push(str);
 
-exports.getAll = function(){
-    return books
-    
-};
+exports.get = (a)=>books.find((books)=>books.title == a);
 
-exports.add = function(str){
-    books.push(str);
-    
-};
-
-exports.get = function(a){
-    var found = books.find(function(books) {
-  return books.title == a;
-});
-return found;
-};
-
-    
-exports.delete = function(a){
-  for(var i=0; i<books.length; i++) {
+exports.delete = (a)=>{
+  for(let i=0; i<books.length; i++) {
     if(books[i].title == a) {
       books.splice(i, 1);
       return true;

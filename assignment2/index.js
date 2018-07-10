@@ -1,18 +1,18 @@
-var http = require('http');
-var books = require('./books.js');
+const http = require('http');
+const books = require('./books.js');
 const querystring = require('querystring');
 
 
 
-http.createServer(function (request, response) {
+http.createServer((request, response)=>{
 
     
-    var path = request.url.toLowerCase();
-    var newstr = path.substr(5,path.length);
-    var arr= newstr.split("=");
-    var arr1 = arr[0];
-    var arr2 = arr[1];
-    var pathr = request.url.replace(/\/?(?:\?.*)?$/, '').toLowerCase();
+    const path = request.url.toLowerCase();
+    const newstr = path.substr(5,path.length);
+    const arr= newstr.split("=");
+    const arr1 = arr[0];
+    const arr2 = arr[1];
+    const pathr = request.url.replace(/\/?(?:\?.*)?$/, '').toLowerCase();
     
     switch(pathr){
         case '':
@@ -23,25 +23,25 @@ http.createServer(function (request, response) {
             response.write('*  DELETE: /delete?title=value                     *\n');
             response.write('****************************************************\n');
             response.write('book-list: \n');
-            var outall = books.getAll();
+            const outall = books.getAll();
             response.end(JSON.stringify(outall));
             break;
             
         case '/add':
             response.writeHead(200, {'Content-Type': 'text/plain'});
-            var arr3 = querystring.parse(newstr);
+            const arr3 = querystring.parse(newstr);
             books.add(arr3);
-            var outall = books.getAll();
-            response.end(JSON.stringify(outall));
+            const outadd = books.getAll();
+            response.end(JSON.stringify(outadd));
             break;
             
             
         case '/get':
             response.writeHead(200, {'Content-Type': 'text/plain'});
             response.write('Searching for '+arr2+'\n');
-            var out = books.get(arr2);
-            if (typeof(out) == "object"){ 
-            response.end(JSON.stringify(out));}
+            const outget = books.get(arr2);
+            if (typeof(outget) == "object"){ 
+            response.end(JSON.stringify(outget));}
             else
             response.end('book not found');
             break;
@@ -49,11 +49,11 @@ http.createServer(function (request, response) {
             
         case '/delete':
             response.writeHead(200, {'Content-Type': 'text/plain'});
-            var result = books.delete(arr2);
+            const result = books.delete(arr2);
             if(result==true){
             response.write('[book title]: '+arr2+' removed\n')
-            var outall = books.getAll();
-            response.end(JSON.stringify(outall));}
+            const outdel = books.getAll();
+            response.end(JSON.stringify(outdel));}
             else
             response.end('book not found\n [book title]: '+arr2+' not removed');
             break;
