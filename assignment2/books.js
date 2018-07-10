@@ -1,9 +1,9 @@
 const books = [
-{ title:'tomsawyer',author:'mark twain', price:12,inventory:23,},
-{ title:'warcross',author:'marie lu', price:25, inventory:5,},
-{ title:'dune',author:'frank herbert', price:20, inventory:32,},
-{ title:'sweettea',author:'wendy lynn decker', price:14, inventory:37,},
-{ title:'gilchrist',author:'christian galacar', price:17, inventory:12, }
+{ title:'Tom Sawyer',author:'Mark Twain', price:12,inventory:23,},
+{ title:'Warcross',author:'Marie Lu', price:25, inventory:5,},
+{ title:'Dune',author:'Frank Herbert', price:20, inventory:32,},
+{ title:'Sweet Tea',author:'Wendy Lynn Decker', price:14, inventory:37,},
+{ title:'Gilchrist',author:'Christian Galacar', price:17, inventory:12, }
 ];
 
 exports.getAll = ()=>books;

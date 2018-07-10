@@ -7,11 +7,10 @@ const querystring = require('querystring');
 http.createServer((request, response)=>{
 
     
-    const path = request.url.toLowerCase();
-    const newstr = path.substr(5,path.length);
-    const arr= newstr.split("=");
-    const arr1 = arr[0];
-    const arr2 = arr[1];
+    const path = request.url.replace(/%20/g,' ');
+    const addstr = path.substr(5,path.length);
+    const arr1= path.split("=");
+    const arr2 = arr1[1];
     const pathr = request.url.replace(/\/?(?:\?.*)?$/, '').toLowerCase();
     
     switch(pathr){
@@ -29,7 +28,7 @@ http.createServer((request, response)=>{
             
         case '/add':
             response.writeHead(200, {'Content-Type': 'text/plain'});
-            const arr3 = querystring.parse(newstr);
+            const arr3 = querystring.parse(addstrs);
             books.add(arr3);
             const outadd = books.getAll();
             response.end(JSON.stringify(outadd));
