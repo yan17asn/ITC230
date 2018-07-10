@@ -28,7 +28,7 @@ http.createServer((request, response)=>{
             
         case '/add':
             response.writeHead(200, {'Content-Type': 'text/plain'});
-            const arr3 = querystring.parse(addstrs);
+            const arr3 = querystring.parse(addstr);
             books.add(arr3);
             const outadd = books.getAll();
             response.end(JSON.stringify(outadd));
