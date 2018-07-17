@@ -1,0 +1,11 @@
+<html>
+<body>
+<form action="http://127.0.0.1:3000/detail" method="POST">
+title: <input type="text" name="title">
+<input type="submit" value="Submit">
+</form>
+{{#each result}}
+    <li><a href="/get?title={{title}}">{{title}}</a></li>
+    {{/each}}
+</body>
+</html>
