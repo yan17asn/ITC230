@@ -1,0 +1,20 @@
+<html>
+<body>
+  <a href="/">Home</a>
+  <h2>Searching for {{title}}</h2>
+  {{#if result}}
+    <h3>Detail for {{title}}</h3>
+    <li>Title: {{ result.title }}
+    <li>Author: {{ result.author }}
+    <li>Price: {{result.price}}
+    <li>Inventory: {{result.inventory}}</li><br>
+    <p>
+    <a href="/delete?title={{result.title}}">Delete</a>
+    </p>
+    
+  {{else}}
+    {{title}} not found
+  {{/if}}
+
+</body>
+</html> 
