@@ -1,0 +1,23 @@
+<html>
+<body>
+<form action="detail" method="POST">
+title: <input type="text" name="title">
+<input type="submit" value="Submit">
+</form>
+{{#each result}}
+    <li><a href="/get?title={{title}}">{{title}}</a></li>
+    {{/each}}
+    
+<h2>Add record:</h2>
+<form action="add" method="post">
+title: <input type="text" name="title"><br>
+author: <input type="text" name="author"><br>
+price: <input type="text" name="price"><br>
+inventory: <input type="text" name="inventory"><br>
+<input type="submit" value="Submit">
+</form>
+
+    
+    
+</body>
+</html>
