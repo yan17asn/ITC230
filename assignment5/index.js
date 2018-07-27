@@ -14,7 +14,7 @@ app.use(express.static(__dirname+'/views'));
 app.use(require('body-parser').urlencoded({extended:true}));
 app.use(require('body-parser').json());
 
-app.use('/api', require('cors')());
+//app.use('/api', require('cors')());
 
 //route
 // return all records 
@@ -32,6 +32,7 @@ app.get('/api/v1/books', (req,res) => {
  
   Book.find({}, (err, result) => {
     if (err) {
+    res.status(500);
     res.json({error:'database connect error'})
     } 
     else
@@ -98,17 +99,23 @@ app.get('/api/v1/book/delete/:title', (req,res) => {
 
 app.post('/api/vi/book/add',(req,res)=>{
     
-    Book.create({'title':req.body.title,'author':req.body.author,'price':req.body.price,'inventory':req.body.inventory}, (err, result) => {
-        
+    let bookrecord= new Book({
+        'title':req.body.title,
+        'author':req.body.author,
+        'price':req.body.price,
+        'inventory':req.body.inventory});
+    bookrecord.save((err,result)=>{
         let added = result.n !== 0;
-       if (added){
+                    if (added){
              Book.count((err,total)=>{
-                res.json({title:req.body.title, result:'deleted',remain:total});
+                res.json({title:req.body.title, result:'added',remain:total});
            });     
        }      
-        else 
+        else
             res.json({error:'book not added'});
-    });
+                    
+                    });
+    
 });
     
 
