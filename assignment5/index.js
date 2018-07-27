@@ -14,7 +14,7 @@ app.use(express.static(__dirname+'/views'));
 app.use(require('body-parser').urlencoded({extended:true}));
 app.use(require('body-parser').json());
 
-//app.use('/api', require('cors')());
+app.use('/api', require('cors')());
 
 //route
 // return all records 
@@ -97,7 +97,7 @@ app.get('/api/v1/book/delete/:title', (req,res) => {
     });
 });
 
-app.post('/api/vi/book/add',(req,res)=>{
+app.post('/api/v1/book/add',(req,res)=>{
     
     let bookrecord= new Book({
         'title':req.body.title,
