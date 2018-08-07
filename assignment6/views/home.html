@@ -25,11 +25,8 @@ class Bookapp extends React.Component{
        }
       showDetails(e){
             let showitem = this.state.books.find((item)=>{
-          return item.title == e.target.title;
-    });
+          return item.title == e.target.title;});
           this.setState({curBook: showitem});
-          
-          
       }
     
       render(){
@@ -43,9 +40,7 @@ class Bookapp extends React.Component{
             />
             <BookDetails item={this.state.curBook} change={this.onChange}
             />
-              
-              
-          </div>
+            </div>
           </div>
               );
       }
@@ -64,12 +59,24 @@ const BookDetails = (props)=>{
     return(
         <span id="details">
         <h4>Book Details:</h4>
-        <form onChange = {props.change}>
-            <input type="text" name="title" value={props.item.title} />
-            <input type="text" name="author" value={props.item.author} />
-            <input type="text" name="price" value={props.item.price} />
-            <input type="text" name="inventory" value={props.item.inventory} />
-        </form>
+        <table onChange = {props.change}>
+        <tr>
+            <th >Title: </th>
+            <td><input type="text" name="title" value={props.item.title} /></td>
+        </tr>
+        <tr>
+            <th>Author: </th>
+            <td><input type="text" name="author" value={props.item.author} /></td>
+        </tr>
+        <tr>
+             <th>Price: </th>
+             <td><input type="text" name="price" value={props.item.price} /></td>
+        </tr>
+        <tr>
+             <th>Inventory: </th>
+            <td><input type="text" name="inventory" value={props.item.inventory} /></td>
+      </tr>
+        </table>
         </span>
     );
 }
