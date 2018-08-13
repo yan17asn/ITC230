@@ -14,7 +14,7 @@ app.use(express.static(__dirname+'/views'));
 app.use(require('body-parser').urlencoded({extended:true}));
 app.use(require('body-parser').json());
 
-app.use('/api', require('cors')());
+//app.use('/api', require('cors')());
 
 //route
 // return all records 
@@ -98,12 +98,12 @@ app.get('/api/v1/book/delete/:title', (req,res) => {
 });
 
 app.post('/api/v1/book/add',(req,res)=>{
-    
-    let bookrecord= new Book({
-        'title':req.body.title,
-        'author':req.body.author,
-        'price':req.body.price,
+    let bookrecord= new Book({'title':req.body.title,'author':req.body.author,'price':req.body.price,
         'inventory':req.body.inventory});
+    Book.findOne({'title':bookrecord.title},(err,result)=>{
+    if (err) return next(err);
+    if(!result){
+    
     bookrecord.save((err,result)=>{
         let added = result.n !== 0;
                     if (added){
@@ -115,7 +115,14 @@ app.post('/api/v1/book/add',(req,res)=>{
             res.json({error:'book not added'});
                     
                     });
-    
+    }
+    else{
+        Book.updateOne({title:req.body.title}, {author: req.body.author, price: req.body.price,inventory:req.body.inventory }, (err, result) => {
+            if (err) return next(err);
+            res.json({updated: result.nModified, title:req.body.title});
+        });
+    }
+    })
 });
     
 
@@ -138,4 +145,3 @@ app.use((req,res)=>{
 app.listen(app.get('port'),()=>{
     console.log('Express started')
 });
-
