@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Book SPA</title>
+   <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style type="text/css">
+        body{
+            background-color: azure;
+        }
+        #list{
+            background-color: skyblue;
+            padding:1em;
+            width:45%;
+            float:left;
+        }
+        #details{
+            background-color: skyblue;
+            padding:1em;
+            width:45%;
+            float:right;
+        }
+    </style>
+  </head>
+  <body>
+  <div id="root"></div>
+  </body>
+    
+  
+<script type="text/babel">
+class Bookapp extends React.Component{
+      constructor(props){
+        super(props); 
+        this.state = {
+            books: {{{result}}},
+            filter:"",
+            curBook: {}
+        };
+        this.onReset = this.onReset.bind(this);
+        this.onSave = this.onSave.bind(this);
+        this.onDelete = this.onDelete.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.onSearch = this.onSearch.bind(this);
+       }
+showDetails(e){
+            let showitem = this.state.books.find((item)=>{
+          return item.title == e.target.title;});
+          this.setState({curBook: showitem});
+          document.getElementById("titleInput").readOnly = true;//avoid user editing the tittle and changing the current list item temporary (Datebase still the same) to cause confuse.
+          
+          
+          
+         
+      }
+onSearch(e){
+    this.setState({filter: e.target.value.toLowerCase()});
+}
+
+onReset() {
+        
+        this.setState({curBook: {}});
+        document.getElementById("titleInput").readOnly = false;
+          
+          
+      }
+onChange(e) {
+        var newBook = this.state.curBook;
+        newBook[e.target.name] = e.target.value;
+        this.setState({curBook: newBook});
+        console.log(newBook);
+        
+      }
+onSave() {
+          
+          let newBook = this.state.curBook;
+          if (!newBook.title) {
+          return;
+          }
+          fetch("/api/v1/book/add/", {
+              method: "POST",
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(newBook)
+          }).then(res => res.json())
+          .then((json) => {
+              if(json.result=="added"){
+                newBook._id = json._id;
+                this.state.books.push(newBook);
+               }
+         this.setState({books:this.state.books,curBook: {}});
+         document.getElementById("titleInput").readOnly = false;
+         
+         });
+        
+         
+      }
+        
+      
+              
+onDelete() {
+          let title = this.state.curBook.title;
+          fetch("/api/v1/book/delete/" + title).then((response) => {
+          return response.json();
+        }).then((results) => {
+          
+          const remain = this.state.books.filter((item) => {
+            return item.title !== title;
+          });
+          // Update state with new array
+          this.setState({books: remain, curBook: {}});
+          document.getElementById("titleInput").readOnly = false;
+        });
+        
+    
+        
+      }
+    
+      render(){
+      return(
+          <div id="wrapper">
+          <h4>Book List:</h4>
+          <SearchForm filter={this.state.filter} change={this.onSearch}/>
+          <div className="container">
+            <Booklist
+                books={this.state.books}
+                filter={this.state.filter}
+                show={this.showDetails.bind(this)}
+            />
+            <BookDetails item={this.state.curBook} change={this.onChange} reset={this.onReset} save={this.onSave} delete={this.onDelete}
+            />
+            </div>
+          </div>
+              );
+      }
+}
+//search
+const SearchForm = (props)=>{
+    return(
+    <div>
+       <input type="text" value={props.filter} onChange={props.change}/><p/>
+    </div>
+            )
+}
+
+//booklist 
+const Booklist = ({books,filter,show}) =>{
+      // return items that match search entry field, or all items if no entry
+      const itemrecord = books.map((item) => {
+          if(!filter||item.title.toLowerCase().includes(filter)){
+        
+          return <li id={item._id} title={item.title} key={item._id}  onClick={show}>{item.title}</li>
+          }
+        });
+      
+      return <span id="list"><ul>{itemrecord}</ul></span>;
+    };
+
+
+//bookdetail
+const BookDetails = (props)=>{
+    return(
+    <span id="details">
+        <h4>Book Details:</h4>
+        <form onChange = {props.change}>
+        <p>Title: <input id="titleInput" type="text" name="title" value={props.item.title||""} /></p>
+        <p>Author: <input type="text" name="author" value={props.item.author||""} /></p>
+        <p>Price: <input type="number" name="price" value={props.item.price||""} /></p>
+        <p>Inventory: <input type="number" name="inventory" value={props.item.inventory||""}/></p><br/>
+        </form>
+        <button onClick={props.save}>save</button>
+        <button onClick={props.reset}>reset</button>
+        <button onClick={props.delete}>delete</button>
+    </span>
+    );
+}
+
+//render to root
+ReactDOM.render(<Bookapp />, document.getElementById("root"));
+</script>
+</html>
